@@ -7,10 +7,16 @@ CHAT_ID = os.environ["CHAT_ID"]
 
 LIMIT = 5.18
 
-url = "https://www.bnr.ro/nbrfxrates.xml"
+url = "https://www.bnr.ro/files/xml/years/nbrfxrates2026.xml"
 
 xml = requests.get(url, timeout=30).content
 
+response = requests.get(url, timeout=30)
+
+print(response.status_code)
+print(response.text[:300])
+
+xml = response.content
 root = ET.fromstring(xml)
 
 namespace = {"ns": "http://www.bnr.ro/xsd"}
