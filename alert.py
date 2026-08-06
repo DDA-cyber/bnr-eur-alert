@@ -1,46 +1,19 @@
 import os
 import requests
-import xml.etree.ElementTree as ET
-
-TOKEN = os.environ["TELEGRAM_TOKEN"]
-CHAT_ID = os.environ["CHAT_ID"]
-
-LIMIT = 5.18
 
 url = "https://www.bnr.ro/files/xml/years/nbrfxrates2026.xml"
 
-xml = requests.get(url, timeout=30).content
+response = requests.get(
+    url,
+    headers={
+        "User-Agent": "Mozilla/5.0"
+    },
+    timeout=30
+)
 
-response = requests.get(url, timeout=30)
+print("Status:", response.status_code)
+print("Content-Type:", response.headers.get("Content-Type"))
+print("Primele 500 caractere:")
+print(response.text[:500])
 
-print(response.status_code)
-print(response.text[:300])
-
-xml = response.content
-root = ET.fromstring(xml)
-
-namespace = {"ns": "http://www.bnr.ro/xsd"}
-
-eur = None
-
-for rate in root.findall(".//ns:Rate", namespace):
-    if rate.attrib.get("currency") == "EUR":
-        eur = float(rate.text)
-        break
-
-if eur is None:
-    raise Exception("Nu am găsit cursul EUR.")
-
-if eur >= LIMIT:
-    text = f"🚨 ALERTĂ BNR\n\nEUR = {eur:.4f} RON\nPragul de 5.18 a fost depășit."
-
-    requests.post(
-        f"https://api.telegram.org/bot{TOKEN}/sendMessage",
-        data={
-            "chat_id": CHAT_ID,
-            "text": text
-        },
-        timeout=30
-    )
-
-print(eur)
+raise Exception("STOP - Debug")
