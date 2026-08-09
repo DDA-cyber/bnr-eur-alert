@@ -1,7 +1,6 @@
 import os
 import json
 import requests
-import xml.etree.ElementTree as ET
 from datetime import datetime, timezone
 
 from config import LIMIT, CURRENCY, TARGET_CURRENCY, MAX_HISTORY
@@ -16,7 +15,10 @@ DATA_FILE = "eur_data.json"
 TOKEN = os.environ["TELEGRAM_TOKEN"]
 CHAT_ID = os.environ["CHAT_ID"]
 
-URL = "https://www.bnr.ro/nbrfxrates.xml"
+API_URL = (
+    "https://cursbnr.servicii-informatice.ro/"
+    "api_public.php"
+)
 
 
 # ==============================
@@ -26,35 +28,39 @@ URL = "https://www.bnr.ro/nbrfxrates.xml"
 def get_eur_rate():
 
     response = requests.get(
-        URL,
-        timeout=30,
-        headers={
-            "User-Agent": "Mozilla/5.0"
-        }
+        API_URL,
+        params={
+            "simbol": CURRENCY
+        },
+        timeout=30
     )
 
     print("Status:", response.status_code)
+    print("Răspuns API:", response.text)
 
     response.raise_for_status()
 
-    root = ET.fromstring(response.content)
+    data = response.json()
 
-    namespace = {
-        "ns": "http://www.bnr.ro/xsd"
-    }
+    if "valoare" not in data:
+        raise Exception(
+            "API-ul nu a returnat cursul EUR."
+        )
 
-    for rate in root.findall(
-        ".//ns:Rate",
-        namespace
-    ):
+    rate = float(data["valoare"])
 
-        if rate.attrib.get("currency") == CURRENCY:
-
-            return float(rate.text)
-
-    raise Exception(
-        "Nu am găsit cursul EUR în XML."
+    print(
+        f"Curs BNR {CURRENCY}: "
+        f"{rate:.4f} {TARGET_CURRENCY}"
     )
+
+    if "data" in data:
+        print(
+            f"Data cursului BNR: "
+            f"{data['data']}"
+        )
+
+    return rate
 
 
 # ==============================
@@ -158,7 +164,9 @@ def send_telegram(message):
 
     response.raise_for_status()
 
-    print("📱 Notificare Telegram trimisă.")
+    print(
+        "📱 Notificare Telegram trimisă."
+    )
 
 
 # ==============================
