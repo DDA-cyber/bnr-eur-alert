@@ -1,4 +1,11 @@
 {
-    "last_rate": null,
-    "history": []
+    "last_rate": 5.2554,
+    "history": [
+        {
+            "timestamp": "2026-08-09 11:00:44 UTC",
+            "currency": "EUR",
+            "target": "RON",
+            "rate": 5.2554
+        }
+    ]
 }
