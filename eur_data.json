@@ -1,5 +1,5 @@
 {
-    "last_rate": 5.2588,
+    "last_rate": 5.2584,
     "history": [
         {
             "timestamp": "2026-08-09 11:00:44 UTC",
@@ -426,6 +426,12 @@
             "currency": "EUR",
             "target": "RON",
             "rate": 5.2588
+        },
+        {
+            "timestamp": "2026-08-28 21:56:30 UTC",
+            "currency": "EUR",
+            "target": "RON",
+            "rate": 5.2584
         }
     ]
 }
