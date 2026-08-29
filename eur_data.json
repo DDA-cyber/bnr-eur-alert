@@ -450,6 +450,12 @@
             "currency": "EUR",
             "target": "RON",
             "rate": 5.2584
+        },
+        {
+            "timestamp": "2026-08-29 18:05:53 UTC",
+            "currency": "EUR",
+            "target": "RON",
+            "rate": 5.2584
         }
     ]
 }
