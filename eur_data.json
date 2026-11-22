@@ -2196,6 +2196,12 @@
             "currency": "EUR",
             "target": "RON",
             "rate": 5.3482
+        },
+        {
+            "timestamp": "2026-11-22 05:24:10 UTC",
+            "currency": "EUR",
+            "target": "RON",
+            "rate": 5.3482
         }
     ]
 }
